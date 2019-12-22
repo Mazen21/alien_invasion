@@ -2,6 +2,7 @@ import sys
 import pygame
 from setting import Settings
 from ship import Ship
+from bullet import Bullet
 
 class AlienInvasion:
     """Overall class to manage assets and behavior"""
@@ -15,7 +16,9 @@ class AlienInvasion:
         self.settings.screen_width = self.screen.get_rect().width
         pygame.display.set_caption("Alien Invasion")
         self.ship = Ship(self)
-    
+        self.bullets = pygame.sprite.Group()
+        self.fired_bullet = 0
+
     def _check_key_down_events(self,e):
         if e.key == pygame.K_RIGHT:
             self.ship.moving_right = True
@@ -23,6 +26,8 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif e.key == pygame.K_q: #press a if it is an azerty keyboard
             sys.exit()
+        elif e.key == pygame.K_SPACE:
+            self._fire_bullet()
 
     def _check_key_up_events(self,e):
         if e.key == pygame.K_RIGHT:
@@ -40,9 +45,28 @@ class AlienInvasion:
             elif event.type == pygame.KEYUP:
                 self._check_key_up_events(event)
 
+    def _fire_bullet(self):
+        """Create a new bullet and add it to the bullet group"""
+        if self.fired_bullet < self.settings.bullets_allowed : 
+            hot_bullet = Bullet(self)
+            self.bullets.add(hot_bullet)
+            self.fired_bullet +=1
+
+    def _update_bullet(self):
+        """Update position of the bullet and get rid of old bullets"""
+        # Update bullet position
+        self.bullets.update()
+
+        # Get rid of the bullets that have disappeared
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
+
     def _update_screen(self):
         """Redraw the screen during each game iteration"""
         self.screen.fill(self.settings.bg_color)
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
         self.ship.blitme()
         
     def run_game(self):
@@ -50,6 +74,7 @@ class AlienInvasion:
         while True:
             self._check_events()
             self.ship.update()
+            self._update_bullet()
             self._update_screen()
             pygame.display.flip()
 
