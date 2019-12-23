@@ -16,3 +16,6 @@ class Settings:
         self.bullet_height = 15
         self.bullet_color =(60,60,60)
         self.bullets_allowed = 36
+
+        # Sky settings
+        self.star_in_the_sky = 50
