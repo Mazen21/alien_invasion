@@ -7,3 +7,5 @@ player shoots all the aliens, a new fleet appears that moves faster than
 the previous fleet. If any alien hits the player' ship or reaches 
 the bottom of the screen, the player loses a ship. If the player loses
 three ships, the game ends
+
+![Game preview](images/snapshot.png)
