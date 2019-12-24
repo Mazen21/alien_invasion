@@ -22,6 +22,9 @@ class Ship:
         # Movement flag
         self.moving_right = False
         self.moving_left = False
+
+        # Number of fired bullets
+        self.fired_bullet = 0
     
     def update(self):
         """update the ship position based on the movement flag"""
@@ -35,3 +38,11 @@ class Ship:
     def blitme(self):
         """Draw the ship at its current position"""
         self.screen.blit(self.image,self.rect)
+    
+    def refill(self):
+        self.fired_bullet = 0
+    
+    def center_ship(self):
+        """Center the ship at the bottom of the screen"""
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x)
